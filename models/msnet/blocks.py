@@ -2,7 +2,6 @@ import torch.nn as nn
 from torch import Tensor
 from models.msnet.model_utils import LayerNormChannelLast
 from timm.models.layers import DropPath
-from models.msnet.KANLinear import *
 
 
 class ConvNextEncoderBlock(nn.Module):
