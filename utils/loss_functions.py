@@ -341,7 +341,7 @@ def sset(a: Tensor, sub: Iterable) -> bool:
 class SurfaceLoss():
     def __init__(self):
         # Self.idc is used to filter out some classes of the target mask. Use fancy indexing
-        self.idc: List[int] = [1,2]  # 这里忽略背景类  https://github.com/LIVIAETS/surface-loss/issues/3
+        self.idc: List[int] = [1,2]  # https://github.com/LIVIAETS/surface-loss/issues/3
  
     # probs: bcwh, dist_maps: bcwh
     def __call__(self, probs: Tensor, dist_maps: Tensor, _: Tensor) -> Tensor:
@@ -352,14 +352,6 @@ class SurfaceLoss():
  
         pc = probs[:, self.idc, ...].type(torch.float32)
         dc = dist_maps[:, self.idc, ...].type(torch.float32)
-
-        # print(f"pc shape: {pc.shape}")  # 打印 pc 的形状
-        # print(f"dc shape: {dc.shape}")  # 打印 dc 的形状
-        # positive_dc = torch.clamp(dc, min=0)  # 只保留正数
-        # negative_dc = torch.clamp(dc, max=0)  # 只保留负数
-
-        # print("Min dist_maps:", dist_maps.min().item(), "Max dist_maps:", dist_maps.max().item())
-        # print("Min probs:", probs.min().item(), "Max probs:", probs.max().item())
 
         multiplied = einsum("bcwh,bcwh->bcwh", pc, dc)
         # print("Min multiplied value:", multiplied.min().item())
